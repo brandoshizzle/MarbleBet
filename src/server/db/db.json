@@ -1,0 +1,30 @@
+{
+  "rooms": {
+    "beans": {
+      "roomCode": "beans",
+      "created": 1604327676754,
+      "users": {}
+    },
+    "undefined": {
+      "users": {
+        "undefined": {}
+      }
+    },
+    "while": {
+      "users": {
+        "lkjsdflsdf": {
+          "bets": [
+            [
+              "Team Momary",
+              "first"
+            ],
+            [
+              "Team Momo",
+              "top-three"
+            ]
+          ]
+        }
+      }
+    }
+  }
+}

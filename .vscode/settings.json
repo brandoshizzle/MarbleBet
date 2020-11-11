@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/7137fdcf-b1e6-4e70-9ee7-82409efb1aa9/resourceGroups/Stuff/providers/Microsoft.Web/sites/MarbleBets",
+    "appService.deploySubpath": "."
+}
