@@ -59,3 +59,10 @@ export const teams = [
 	"Thunderbolts",
 	"Turtle Sliders",
 ];
+
+export const betTable = {
+	first: 1,
+	'top-three': 2,
+	'top-half': 3,
+	last: 4,
+};

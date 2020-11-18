@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Firebase from "firebase";
 import merge from "lodash/merge";
 import clone from "lodash/clone";
-import { teams } from "./../state";
+// import { teams } from "./../state";
 
 function LeaderboardRow(props) {
 	console.log(props);
@@ -61,7 +61,7 @@ const defaultPlayer = {
 function Dashboard() {
 	const db = Firebase.database();
 	const { roomCode } = useParams();
-	const [users, setUsers] = useState({});
+	// const [users, setUsers] = useState({});
 	const [bets, setBets] = useState({});
 	const [scoreboardRows, setScoreboardRows] = useState([]);
 
@@ -93,7 +93,7 @@ function Dashboard() {
 					/>
 				);
 			}
-			setUsers(completePlayers);
+			// setUsers(completePlayers);
 			setScoreboardRows(tempLeaderboardRows);
 		});
 		var betsRef = db.ref(`${roomCode}/bets`);
