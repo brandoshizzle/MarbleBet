@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useHistory } from 'react-router-dom';
-import { usernameState, teams } from './../state';
+import { usernameState, teams, betTable } from './../state';
 import axios from 'axios';
 
 function TeamRow(props) {
@@ -78,15 +78,17 @@ function Phone() {
 	};
 
 	const submitBet = (e) => {
-		axios
-			.post('/api/bet', {
-				roomCode,
-				username,
-				bets,
-			})
-			.then((res) => {
-				console.log(res);
-			});
+		const betsToSend = {};
+		bets.map((arr, i) => {
+			betsToSend[i] = [arr[0], betTable[arr[1]]];
+			return i;
+		});
+		axios.patch(`https://marblebet.firebaseio.com/${roomCode}/bets/${username}.json`, betsToSend).then((res) => {
+			console.log(res);
+			setBets([]);
+			setBetComponenets([]);
+			alert('Bet submitted. Good luck!');
+		});
 	};
 
 	return (

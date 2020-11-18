@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { useParams } from 'react-router-dom';
-// import io from 'socket.io-client';
 import { usernameState } from './../state';
-
-// const socket = io();
-
-// sockets test
-// socket.on('hello', ({ message }) => alert(message));
 
 function Dashboard() {
 	const { roomCode } = useParams();
@@ -28,7 +22,7 @@ function Dashboard() {
 					{/* <h4 style=>Marble Bets</h4> */}
 				</div>
 				<div className="container" style={{ maxWidth: '100%', marginTop: 5 }}>
-					<div class="row">
+					<div className="row">
 						<div className="column" style={{ paddingRight: 20 }}>
 							<div style={{ textAlign: 'left' }}>
 								<h3 style={{ textAlign: 'left', marginBottom: 0, display: 'inline-block' }}>
@@ -100,8 +94,6 @@ function Dashboard() {
 										<th>Rank</th>
 										<th>Name</th>
 										<th>Points</th>
-										<th>Success Rate</th>
-										<th>Average winnings</th>
 									</tr>
 								</thead>
 								<tbody>
