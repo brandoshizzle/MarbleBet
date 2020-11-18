@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
-import Dashboard from './pages/Dashboard';
-import Phone from './pages/Phone';
-import Home from './pages/Home';
-import './milligram.min.css';
-import './App.css';
-import Firebase from 'firebase';
-import config from './config';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import Dashboard from "./pages/Dashboard";
+import Phone from "./pages/Phone";
+import Home from "./pages/Home";
+import "./milligram.min.css";
+import "./App.css";
+import Firebase from "firebase";
+import config from "./config";
 
 function App() {
 	Firebase.initializeApp(config);

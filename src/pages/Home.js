@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import randomWords from 'random-words';
-import { usernameState } from './../state';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import Firebase from 'firebase';
+import React, { useState } from "react";
+import { useRecoilState } from "recoil";
+import randomWords from "random-words";
+import { usernameState } from "./../state";
+import { useHistory } from "react-router-dom";
+import Firebase from "firebase";
 
 function Home(props) {
 	const db = Firebase.database();
-	// console.log(db);
-	const [roomCode, setRoomCode] = useState('');
+	const [roomCode, setRoomCode] = useState("");
 	const [username, setUsername] = useRecoilState(usernameState);
-	const [error, setError] = useState('');
+	const [error, setError] = useState("");
 	const history = useHistory();
 
 	const onRoomCodeChange = (e) => {
@@ -22,10 +20,11 @@ function Home(props) {
 		setUsername(e.target.value);
 	};
 
+	// Generate word, see if it's okay to use it
 	const createRoom = () => {
 		const roomCode = randomWords(1)[0];
 		db.ref(`rooms/${roomCode}`)
-			.once('value')
+			.once("value")
 			.then((snapshot) => {
 				// Room code found, exit if it's less than one day old
 				if (snapshot.val()) {
@@ -44,25 +43,26 @@ function Home(props) {
 			});
 	};
 
+	// Join room only if it's okay
 	const joinRoom = () => {
-		if (username === '') {
-			setError('Please enter a username');
+		if (username === "") {
+			setError("Please enter a username");
 			return;
 		}
-		if (roomCode === '') {
-			setError('Please enter a room code');
+		if (roomCode === "") {
+			setError("Please enter a room code");
 			return;
 		}
-		localStorage.setItem('username', username);
+		localStorage.setItem("username", username);
 		db.ref(`rooms/${roomCode}`)
-			.once('value')
+			.once("value")
 			.then((snapshot) => {
 				// Room code found, exit if it's less than one day old
 				if (snapshot.val()) {
 					const roomURL = `/${roomCode}`;
 					history.push(roomURL);
 				} else {
-					setError('No room by that name found');
+					setError("No room by that name found");
 				}
 			});
 
@@ -101,7 +101,7 @@ function Home(props) {
 						style={{ width: 170 }}
 					/>
 					<button onClick={joinRoom}>Join Room</button>
-					<p style={{ color: 'red' }}>{error}</p>
+					<p style={{ color: "red" }}>{error}</p>
 				</div>
 			</header>
 		</div>
