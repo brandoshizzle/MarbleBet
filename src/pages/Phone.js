@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { useHistory } from 'react-router-dom';
 import { usernameState, teams, betTable } from './../state';
 import axios from 'axios';
+import Firebase from 'firebase';
 
 function TeamRow(props) {
 	const { team1, team2, openCard } = props;
@@ -32,6 +33,7 @@ function Phone() {
 	const [placementCardShow, setPlacementCardShow] = useState('none');
 	const [username, setUsername] = useRecoilState(usernameState);
 	const history = useHistory();
+	const db = Firebase.database();
 
 	// On launch
 	useEffect(() => {
@@ -56,6 +58,9 @@ function Phone() {
 			tempTeamRows.push(<TeamRow team1={teams[i]} team2={teams[i + 1]} openCard={onTeamClick} key={teams[i]} />);
 		}
 		setTeamRows(tempTeamRows);
+
+		// Subscribe to score changes
+		db.ref(`${roomCode}/players/${username}`);
 	}, []);
 
 	const onTeamClick = (e) => {
