@@ -42,7 +42,7 @@ function Phone() {
 	const [rank, setRank] = useState(0);
 	const [score, setScore] = useState(0);
 
-	// On launch
+	// On launchh
 	useEffect(() => {
 		// Check if room exists
 		db.ref(`rooms/${roomCode}`)
