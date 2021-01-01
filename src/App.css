@@ -14,7 +14,7 @@
 	background-color: white;
 	position: fixed;
 	width: 75%;
-	max-width: 500px;
+	/* max-width: 500px; */
 	height: 50%;
 	z-index: 1000;
 	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.7);
@@ -24,7 +24,7 @@
 	border-radius: 5px;
 }
 
-#placement-card button {
+#placement-card .button {
 	width: 100%;
 	background-color: green;
 }
@@ -57,4 +57,9 @@ td {
 	height: 2.8rem;
 	line-height: 2.8rem;
 	padding: 0 1.5rem;
+}
+
+.betList {
+	margin: 0;
+	list-style: none;
 }

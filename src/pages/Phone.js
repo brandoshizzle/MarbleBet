@@ -4,7 +4,6 @@ import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
 import { usernameState, teams, betTable } from "./../state";
 import Firebase from "firebase";
-import axios from "axios";
 
 function TeamRow(props) {
 	const { team1, team2, openCard, teamId } = props;
@@ -40,6 +39,8 @@ function Phone() {
 	const [clickedTeam, setClickedTeam] = useState("");
 	const [placementCardShow, setPlacementCardShow] = useState("none");
 	const [username, setUsername] = useRecoilState(usernameState);
+	const [rank, setRank] = useState(0);
+	const [score, setScore] = useState(0);
 
 	// On launch
 	useEffect(() => {
@@ -85,12 +86,16 @@ function Phone() {
 		setTeamRows(tempTeamRows);
 
 		// Subscribe to score and rank
-		db.ref(`${roomCode}/players/${username}`)
-			.on("value")
-			.then((snapshot) => {
-				const data = snapshot.val();
-				console.log(data);
-			});
+		db.ref(`${roomCode}/players/${username}`).on("value", (snapshot) => {
+			const data = snapshot.val();
+			console.log(data);
+			if (data.hasOwnProperty("s")) {
+				setScore(data.s);
+			}
+			if (data.hasOwnProperty("r")) {
+				setRank(data.r);
+			}
+		});
 	}, []);
 
 	const onTeamClick = (e) => {
@@ -103,49 +108,64 @@ function Phone() {
 		if (bets.length === 3) {
 			return;
 		}
-		setBets([...bets, [clickedTeam, e.target.id]]);
+		let newBets = [...bets, [clickedTeam, e.target.id]];
+		setBets(newBets);
 
-		setBetComponenets([
-			...betComponents,
-			<li key={clickedTeam}>
-				{teams[clickedTeam]} will place{" "}
-				{e.target.getAttribute("data-place")}
-			</li>,
-		]);
+		const newBetComponents = newBets.map((arr, i) => {
+			let val = 10;
+			val = newBets.length === 2 ? 5 : val;
+			if (newBets.length === 3) {
+				val = i === 0 ? 4 : 3;
+			}
+			return (
+				<li className="betList" key={"bet" + i}>
+					{val} on <strong>{teams[arr[0]]}</strong> placing{" "}
+					{betTable[arr[1]]}
+				</li>
+			);
+		});
+
+		setBetComponenets(newBetComponents);
 	};
 
 	const submitBet = (e) => {
 		const betsToSend = {};
 		bets.map((arr, i) => {
-			betsToSend[i] = [arr[0], betTable[arr[1]]];
+			betsToSend[i] = [arr[0], arr[1]];
 			return i;
 		});
-		axios
-			.patch(
-				`https://marblebet.firebaseio.com/${roomCode}/bets/${username}.json`,
-				betsToSend
-			)
-			.then((res) => {
-				console.log(res);
-				setBets([]);
-				setBetComponenets([]);
-				alert("Bet submitted. Good luck!");
-			});
+		db.ref(`${roomCode}/bets/${username}`).set(betsToSend);
+		setBets([]);
+		setBetComponenets([]);
+		alert("Bet submitted. Good luck!");
 	};
 
 	return (
 		<div className="App">
 			<header className="App-header">
-				<p
+				<div
 					style={{
 						marginBottom: 0,
 						background: "rgba(155,77,202,0.5)",
 						width: "100%",
 						color: "white",
 					}}>
-					<strong>{username}</strong> is in room{" "}
-					<strong>{roomCode}</strong>
-				</p>
+					<p
+						style={{
+							marginBottom: 0,
+						}}>
+						<strong>{username}</strong> is in room{" "}
+						<strong>{roomCode}</strong>
+					</p>
+					<p
+						style={{
+							margin: 0,
+						}}>
+						You're ranked <strong>{rank}</strong>th with{" "}
+						<strong>{score}</strong> points
+					</p>
+				</div>
+
 				<h4 style={{ marginBottom: 1, marginTop: 14 }}>
 					Place up to 3 bets
 				</h4>
@@ -175,16 +195,32 @@ function Phone() {
 					<div id="placement-card">
 						<h3>{teams[clickedTeam]}</h3>
 						<p>will come in...</p>
-						<button onClick={addBet} id="f" data-place="first">
+						<button
+							onClick={addBet}
+							className="button"
+							id="0"
+							data-place="first">
 							First place
 						</button>
-						<button onClick={addBet} id="t" data-place="top three">
+						<button
+							onClick={addBet}
+							className="button"
+							id="1"
+							data-place="top three">
 							Top Three
 						</button>
-						<button onClick={addBet} id="h" data-place="top half">
+						<button
+							onClick={addBet}
+							className="button"
+							id="2"
+							data-place="top half">
 							Top Half
 						</button>
-						<button onClick={addBet} id="l" data-place="last">
+						<button
+							onClick={addBet}
+							className="button"
+							id="3"
+							data-place="last">
 							Last
 						</button>
 					</div>
